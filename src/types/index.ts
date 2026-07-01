@@ -5,7 +5,7 @@ export interface Tour {
   price: number;
   duration: number;
   rating: number;
-  reviews: number;
+  reviews_count: number;
   image: string;
   images: string[];
   location: string;
@@ -13,39 +13,38 @@ export interface Tour {
   category: string;
   tags: string[];
   hotel?: string;
-  hotelStars?: number;
+  hotel_stars?: number;
   included: string[];
-  notIncluded: string[];
-  itinerary: ItineraryDay[];
-  isHot?: boolean;
+  not_included: string[];
+  itinerary_days?: ItineraryDay[];
+  is_hot?: boolean;
   discount: number;
-  maxPeople?: number;
+  max_people: number;
   // Rich details
   meals?: string;
   transport?: string;
-  guideLanguage?: string;
-  groupSize?: string;
+  guide_language?: string;
+  group_size?: string;
   difficulty?: string;
-  bestSeason?: string;
-  visaRequired?: boolean;
-  insuranceIncluded?: boolean;
-  freeCancellation?: boolean;
-  instantConfirmation?: boolean;
+  best_season?: string;
+  visa_required?: boolean;
+  insurance_included?: boolean;
+  free_cancellation?: boolean;
+  instant_confirmation?: boolean;
   amenities?: string[];
   highlights?: string[];
   faqs?: { q: string; a: string }[];
   gallery?: string[];
-  departureCities?: string[];
-  arrivalInfo?: string;
-  importantNotes?: string;
-  suitableFor?: string[];
+  departure_cities?: string[];
+  arrival_info?: string;
+  important_notes?: string;
+  suitable_for?: string[];
   languages?: string[];
 }
 
 export interface ItineraryDay {
   id: string;
-  day: number;
-  dayNumber: number;
+  day_number: number;
   title: string;
   description: string;
 }
@@ -61,7 +60,7 @@ export interface BlogPost {
   date: string;
   image: string;
   category: string;
-  readTime: number;
+  // readTime: number;
   read_time: number;
   likes: number;
 }
@@ -113,7 +112,7 @@ export interface Destination {
   name: string;
   country: string;
   image: string;
-  tourCount: number;
+  tour_count: number;
 }
 
 export interface Review {

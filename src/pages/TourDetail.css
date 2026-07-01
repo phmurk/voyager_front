@@ -1,0 +1,324 @@
+.tour-detail-page {
+  padding-top: 5rem; /* pt-20 */
+  min-height: 100vh;
+}
+
+.tour-hero-gallery {
+  position: relative;
+  border-radius: 1.5rem; /* rounded-2xl */
+  overflow: hidden;
+  aspect-ratio: 21/9;
+  margin-bottom: 2rem;
+  background-color: hsl(var(--muted));
+}
+
+.hero-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 50px 30px 2rem;
+}
+
+.gallery-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  border: none;
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  z-index: 10;
+}
+
+.gallery-nav-btn:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.gallery-nav-btn.prev {
+  left: 1rem;
+}
+.gallery-nav-btn.next {
+  right: 1rem;
+}
+
+.thumbnail-strip {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.thumb-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 0;
+  transition: border-color 0.2s;
+}
+
+.thumb-btn.active {
+  border-color: hsl(var(--primary));
+}
+
+.detail-tabs {
+  display: flex;
+  gap: 1.5rem;
+  border-bottom: 1px solid hsl(var(--border));
+  margin-bottom: 2rem;
+}
+
+.tab-trigger {
+  padding-bottom: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  color: hsl(var(--muted-foreground));
+  position: relative;
+  transition: color 0.2s;
+}
+
+.tab-trigger.active {
+  color: hsl(var(--primary));
+}
+.tab-trigger.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: hsl(var(--primary));
+  border-radius: 99px;
+}
+
+.booking-card {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  position: sticky;
+  top: 6rem;
+}
+
+.price-display {
+  font-size: 2rem;
+  font-weight: 700;
+  color: hsl(var(--primary));
+}
+
+.info-box {
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  text-align: center;
+}
+
+.itinerary-day {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  margin-bottom: 1rem;
+}
+
+.day-number {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: hsla(var(--primary) / 0.1);
+  color: hsl(var(--primary));
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.tour-detail-page .btn-primary {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.tour-detail-page .btn-primary:hover,
+.tour-detail-page .btn-primary:active,
+.tour-detail-page .btn-primary:focus {
+  background-color: #10b981 !important; /* чуть ярче изумрудного */
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 0.25rem hsla(var(--primary) / 0.25);
+}
+
+.tour-detail-page .btn-secondary {
+  background-color: hsla(var(--primary) / 0.1);
+  border-color: hsla(var(--primary) / 0.2);
+  color: hsl(var(--primary));
+}
+
+.tour-detail-page .btn-secondary:hover {
+  background-color: hsla(var(--primary) / 0.2);
+  border-color: hsla(var(--primary) / 0.3);
+  color: hsl(var(--primary));
+}
+
+.text-primary {
+  color: hsl(var(--primary)) !important;
+}
+
+.tour-detail-page input[type="date"] {
+  background-color: hsl(var(--muted)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  color: hsl(var(--foreground)) !important;
+  border-radius: 0.75rem;
+  padding: 10px 12px 10px 40px; /* отступ слева под иконку календаря */
+  outline: none;
+  width: 100%;
+}
+
+.tour-detail-page input[type="date"]:focus {
+  border-color: hsl(var(--primary)) !important;
+  box-shadow: 0 0 0 2px hsla(var(--primary) / 0.2) !important;
+}
+
+.tour-detail-page input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8) sepia(100%) saturate(500%) hue-rotate(120deg); /* Красим иконку в изумрудный */
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.tour-detail-page input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+.info-box {
+  background-color: hsla(var(--card) / 0.5);
+  border: 1px solid hsla(var(--primary) / 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.info-box .text-primary {
+  color: hsl(var(--primary)) !important;
+}
+
+.modal-overlay .booking-card {
+  border: 1px solid hsla(var(--primary) / 0.2);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.badge.bg-success {
+  background-color: hsl(var(--primary)) !important;
+  transform: translateY(8px);
+}
+
+.badge.bg-danger {
+  background-color: #ef4444 !important; /* Насыщенный красный для горячих туров */
+}
+
+/* Убираем синий цвет у кнопок Primary */
+.tour-detail-page .btn-primary {
+  background-color: hsl(var(--primary)) !important;
+  border-color: hsl(var(--primary)) !important;
+  color: #fff !important;
+}
+
+.tour-detail-page .btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 8px 20px -4px hsla(var(--primary) / 0.4);
+}
+
+/* Убираем синий цвет у кнопок Outline */
+.tour-detail-page .btn-outline-secondary {
+  border-color: hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+}
+
+.tour-detail-page .btn-outline-secondary:hover {
+  background-color: hsla(var(--primary) / 0.1);
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary));
+}
+
+/* Переопределяем класс text-primary для иконок */
+.text-primary {
+  color: hsl(var(--primary)) !important;
+}
+
+/* Стилизация календаря (input date) */
+.tour-detail-page input[type="date"] {
+  background-color: hsl(var(--muted)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  color: hsl(var(--foreground)) !important;
+  border-radius: 12px;
+  padding: 12px 12px 12px 45px !important; /* Отступ под иконку Lucide */
+  font-family: inherit;
+  cursor: pointer;
+  appearance: none;
+}
+
+/* Фокус на поле даты */
+.tour-detail-page input[type="date"]:focus {
+  border-color: hsl(var(--primary)) !important;
+  box-shadow: 0 0 0 2px hsla(var(--primary) / 0.2) !important;
+  outline: none;
+}
+
+.tour-detail-page input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.6) sepia(100%) saturate(1000%) hue-rotate(110deg); /* Красим в изумрудный */
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.tab-trigger.active {
+  color: hsl(var(--primary)) !important;
+}
+.tab-trigger.active::after {
+  background-color: hsl(var(--primary)) !important;
+}
+
+.badge.bg-success {
+  background-color: hsl(var(--primary)) !important;
+}
+
+.info-box {
+  background-color: hsla(var(--foreground) / 0.03);
+  border: 1px solid hsla(var(--primary) / 0.1);
+  transition: border-color 0.3s ease;
+}
+
+.info-box:hover {
+  border-color: hsla(var(--primary) / 0.3);
+}

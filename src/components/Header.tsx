@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, ShoppingCart, User, Compass } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { useCart } from '../contexts/CartContext';
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, ShoppingCart, User, Compass } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
+import { useCart } from "../contexts/CartContext";
+import "./Header.css"; // Импортируем стили
 
 const navLinks = [
-  { label: 'Главная', href: '/' },
-  { label: 'Туры', href: '/tours' },
-  { label: 'Блог', href: '/blog' },
-  { label: 'О нас', href: '/about' },
+  { label: "Главная", href: "/" },
+  { label: "Туры", href: "/tours" },
+  { label: "Блог", href: "/blog" },
+  { label: "О нас", href: "/about" },
 ];
 
 export default function Header() {
@@ -21,8 +22,8 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -30,33 +31,23 @@ export default function Header() {
   }, [location.pathname]);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-background/95 backdrop-blur-md border-b border-border shadow-lg'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+    <header className={`header-main ${isScrolled ? "scrolled" : ""}`}>
+      <div className="container">
+        <div className="header-container">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <Compass className="w-7 h-7 text-emerald-400 group-hover:rotate-45 transition-transform duration-300" />
-            <span className="text-xl font-bold tracking-tight">
-              VOYAGER
-            </span>
+          <Link to="/" className="logo-link">
+            <Compass className="logo-icon" size={28} color="#34d399" />
+            <span className="logo-text">VOYAGER</span>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="nav-list">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
-                className={`text-sm font-medium transition-colors hover:text-emerald-400 ${
-                  location.pathname === link.href
-                    ? 'text-emerald-400'
-                    : 'text-foreground/70'
+                className={`nav-link-custom ${
+                  location.pathname === link.href ? "active" : ""
                 }`}
               >
                 {link.label}
@@ -65,42 +56,35 @@ export default function Header() {
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-3">
+          <div className="d-flex align-items-center gap-2">
             <button
-              onClick={() => navigate('/cart')}
-              className="relative p-2 rounded-lg hover:bg-muted transition-colors"
+              onClick={() => navigate("/cart")}
+              className="action-btn"
               aria-label="Корзина"
             >
-              <ShoppingCart className="w-5 h-5" />
-              {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-emerald-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
-                  {itemCount}
-                </span>
-              )}
+              <ShoppingCart size={20} />
+              {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
             </button>
 
             {user ? (
-              <div className="hidden lg:flex items-center gap-3">
-                <Link
-                  to="/profile"
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted hover:bg-muted/70 transition-colors"
-                >
-                  <User className="w-4 h-4 text-emerald-400" />
-                  <span className="text-sm font-medium">{user.name}</span>
+              <div className="d-none d-lg-flex align-items-center gap-3">
+                <Link to="/profile" className="auth-profile-link">
+                  <User size={16} color="#34d399" />
+                  <span className="fw-medium">{user.name}</span>
                 </Link>
                 <button
                   onClick={logout}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="btn btn-link btn-sm text-decoration-none text-muted p-0"
                 >
                   Выйти
                 </button>
               </div>
             ) : (
               <button
-                onClick={() => navigate('/auth')}
-                className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors"
+                onClick={() => navigate("/auth")}
+                className="btn-emerald d-none d-lg-flex"
               >
-                <User className="w-4 h-4" />
+                <User size={16} />
                 Войти
               </button>
             )}
@@ -108,14 +92,10 @@ export default function Header() {
             {/* Mobile menu toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+              className="action-btn d-lg-none"
               aria-label="Меню"
             >
-              {isMobileMenuOpen ? (
-                <X className="w-5 h-5" />
-              ) : (
-                <Menu className="w-5 h-5" />
-              )}
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
@@ -123,44 +103,40 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-background/95 backdrop-blur-md border-b border-border">
-          <div className="container mx-auto px-4 py-4 space-y-2">
+        <div className="mobile-menu-dropdown d-lg-none">
+          <div className="container py-3">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
-                className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                  location.pathname === link.href
-                    ? 'bg-emerald-600/10 text-emerald-400'
-                    : 'hover:bg-muted'
+                className={`mobile-nav-link ${
+                  location.pathname === link.href ? "active" : ""
                 }`}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="pt-2 border-t border-border">
+            <div className="pt-3 mt-2 border-top border-secondary">
               {user ? (
-                <div className="flex items-center justify-between px-4 py-2">
-                  <Link
-                    to="/profile"
-                    className="flex items-center gap-2 text-sm font-medium hover:text-emerald-400 transition-colors"
-                  >
-                    <User className="w-4 h-4 text-emerald-400" />
+                <div className="d-flex align-items-center justify-content-between px-2">
+                  <Link to="/profile" className="logo-link fs-6">
+                    <User size={16} color="#34d399" />
                     {user.name}
                   </Link>
                   <button
                     onClick={logout}
-                    className="text-sm text-emerald-400 hover:text-emerald-300"
+                    className="btn btn-link text-emerald-400 p-0 text-decoration-none"
+                    style={{ color: "hsl(var(--primary))" }}
                   >
                     Выйти
                   </button>
                 </div>
               ) : (
                 <button
-                  onClick={() => navigate('/auth')}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-emerald-600 text-white text-sm font-medium"
+                  onClick={() => navigate("/auth")}
+                  className="btn-emerald w-100 justify-content-center py-3"
                 >
-                  <User className="w-4 h-4" />
+                  <User size={16} />
                   Войти
                 </button>
               )}

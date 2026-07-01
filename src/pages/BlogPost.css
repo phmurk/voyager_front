@@ -1,0 +1,143 @@
+.blog-post-page {
+  padding-top: 5rem; /* pt-20 */
+  min-height: 100vh;
+}
+
+.blog-post-container {
+  max-width: 800px; /* max-w-3xl примерно 768-800px */
+  margin: 0 auto;
+}
+
+.blog-hero-image-wrapper {
+  aspect-ratio: 16 / 9;
+  border-radius: 1rem;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+/* Стили для аватарок-букв */
+.user-avatar-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 700;
+  flex-shrink: 0;
+  user-select: none;
+  border-radius: 50%; /* Для форума и списка */
+}
+
+/* Специфичные размеры */
+.user-avatar-circle.size-sm {
+  width: 24px;
+  height: 24px;
+  font-size: 0.75rem;
+}
+
+.user-avatar-circle.size-md {
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
+}
+
+.user-avatar-circle.size-lg {
+  width: 96px;
+  height: 96px;
+  font-size: 2.5rem;
+}
+
+/* Если в блоге аватар автора должен быть квадратным со скруглением (как было в img) */
+.author-section .user-avatar-circle {
+  border-radius: 50%; /* или 1rem, если хотите как раньше */
+}
+
+.blog-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.category-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background-color: hsla(var(--primary) / 0.1);
+  color: hsl(var(--primary));
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.author-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.author-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.blog-main-content {
+  color: hsl(var(--muted-foreground));
+  line-height: 1.8;
+}
+
+.blog-excerpt {
+  font-size: 1.125rem;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 1.5rem;
+}
+
+.blog-paragraph {
+  margin-bottom: 1.25rem;
+}
+
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--card));
+  color: hsl(var(--foreground));
+}
+
+.btn-action:hover {
+  background-color: hsl(var(--muted));
+}
+
+.btn-like-active {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: white;
+}
+
+.btn-like-active:hover {
+  filter: brightness(1.1);
+  background-color: hsl(var(--primary));
+}
+
+.skeleton-blog-hero {
+  height: 400px;
+  background-color: hsl(var(--muted));
+  border-radius: 1rem;
+  animation: blogPulse 2s infinite;
+}
+
+@keyframes blogPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

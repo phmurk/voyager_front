@@ -1,0 +1,173 @@
+.forum-page {
+  padding-top: 5rem; /* pt-20 */
+  min-height: 100vh;
+  background-color: hsl(var(--background));
+}
+
+.forum-container {
+  max-width: 800px; /* max-w-3xl */
+  margin: 0 auto;
+}
+
+.forum-card {
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Добавьте это в ForumTopic.css */
+
+.forum-card,
+.reply-item {
+  /* Гарантируем, что карточка не растягивается шире экрана */
+  max-width: 100%;
+  /* Разрешаем перенос длинных слов и ссылок */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Исправляем заголовок, чтобы он не вылезал */
+.forum-card h1 {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Исправляем контейнер с автором, чтобы на узких экранах он не ломал верстку */
+.forum-card .d-flex,
+.reply-item .d-flex {
+  max-width: 100%;
+}
+
+.forum-card div,
+.reply-item div {
+  /* Позволяет текстовым блокам внутри flex-контейнеров сжиматься */
+  min-width: 0;
+}
+
+/* Убираем жесткие отступы на мобилках, чтобы тексту было больше места */
+@media (max-width: 576px) {
+  .forum-card,
+  .reply-item {
+    padding: 1rem !important;
+  }
+
+  .forum-meta {
+    flex-wrap: wrap; /* Чтобы "категория" и "ответы" переносились */
+    gap: 0.5rem;
+  }
+}
+
+.reply-item {
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.btn-emerald-publish {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--background)) !important;
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+  border: none !important;
+  transition: all 0.3s ease;
+}
+
+.btn-emerald-publish:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}
+
+.avatar-forum {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: hsl(var(--muted));
+}
+
+.avatar-reply {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.forum-category-tag {
+  padding: 0.125rem 0.5rem;
+  background-color: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+
+.forum-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.reply-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background-color: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  font-size: 0.875rem;
+  outline: none;
+  resize: none;
+  transition: border-color 0.2s;
+}
+
+.reply-textarea:focus {
+  border-color: hsl(var(--primary));
+}
+
+.btn-forum-send {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.75rem;
+  background-color: hsl(var(--primary));
+  color: white;
+  border: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
+}
+
+.btn-forum-send:hover:not(:disabled) {
+  background-color: #10b981;
+}
+
+.btn-forum-send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.skeleton-forum-line {
+  background-color: hsl(var(--muted));
+  border-radius: 0.5rem;
+  animation: forumPulse 2s infinite;
+}
+
+@keyframes forumPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

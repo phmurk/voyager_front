@@ -1,0 +1,171 @@
+.dest-section {
+  padding: 4rem 0; /* py-16 */
+}
+
+@media (min-width: 992px) {
+  .dest-section {
+    padding: 6rem 0; /* py-24 */
+  }
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: all 0.7s ease-out;
+}
+
+.scroll-reveal.visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.dest-slider-viewport {
+  overflow: hidden;
+  margin: 0 -15px; /* компенсируем padding контейнера для мобилок */
+  padding: 0 15px;
+}
+
+.dest-slider-track {
+  display: flex;
+  gap: 1.5rem; /* gap-6 */
+  transition: transform 0.5s ease-out;
+  will-change: transform;
+}
+
+.dest-card {
+  flex: 0 0 auto;
+  width: 300px;
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+  color: white;
+}
+
+.dest-card-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem; /* rounded-xl */
+  aspect-ratio: 4/5;
+}
+
+.dest-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.dest-card:hover .dest-card-img {
+  transform: scale(1.1);
+}
+
+.dest-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0) 60%
+  );
+}
+
+.dest-card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.25rem;
+}
+
+.dest-country-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: hsl(var(--primary));
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.nav-btn {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid hsl(var(--border));
+  background: transparent;
+  color: hsl(var(--foreground));
+  transition: all 0.2s;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background-color: hsl(var(--muted));
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.mobile-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background-color: hsl(var(--muted));
+  transition: background-color 0.2s;
+}
+
+.dot.active {
+  background-color: hsl(var(--primary));
+}
+
+/* Добавьте или обновите эти части в DestinationSlider.css */
+
+.nav-btn {
+  width: 42px;
+  height: 42px;
+  min-width: 42px; /* Чтобы не сжимались в flex-контейнере */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid hsl(var(--border));
+  background: hsla(var(--card) / 0.8); /* Сделаем чуть заметнее */
+  color: hsl(var(--foreground));
+  transition: all 0.2s;
+  backdrop-filter: blur(4px);
+}
+
+@media (max-width: 576px) {
+  .nav-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+
+  .dest-section {
+    padding: 3rem 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .dest-slider-viewport {
+    margin: 0;
+    padding: 0;
+    overflow: visible; /* Позволяет видеть кусочек следующей карточки */
+  }
+
+  .container {
+    overflow: hidden; /* Ограничиваем вылет карточек за пределы экрана */
+  }
+}

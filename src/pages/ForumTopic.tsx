@@ -1,8 +1,76 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, MessageSquare, ThumbsUp, Send, User } from 'lucide-react';
-import { api } from '../lib/api';
-import { useAuth } from '../contexts/AuthContext';
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { ArrowLeft, MessageSquare, Send, User } from "lucide-react";
+import { api } from "../lib/api";
+import { useAuth } from "../contexts/AuthContext";
+import "./ForumTopic.css";
+
+const getUserColor = (name: string = "User") => {
+  const colors = [
+    "#10b981",
+    "#3b82f6",
+    "#f59e0b",
+    "#ef4444",
+    "#8b5cf6",
+    "#ec4899",
+    "#06b6d4",
+    "#f97316",
+    "#14b8a6",
+    "#6366f1",
+  ];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return colors[Math.abs(hash % colors.length)];
+};
+
+const UserAvatar = ({
+  name,
+  size = "md",
+}: {
+  name: string;
+  size?: "sm" | "md";
+}) => {
+  const safeName = name || "U";
+  return (
+    <div
+      className={`user-avatar-circle size-${size}`}
+      style={{
+        backgroundColor: getUserColor(safeName),
+        width: size === "md" ? "40px" : "32px",
+        height: size === "md" ? "40px" : "32px",
+        borderRadius: "50%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "white",
+        fontWeight: "bold",
+        fontSize: size === "md" ? "1rem" : "0.8rem",
+        flexShrink: 0,
+      }}
+    >
+      {safeName.charAt(0).toUpperCase()}
+    </div>
+  );
+};
+
+// const formatForumDate = (createdAt: string) => {
+//   if (!createdAt) return "";
+//   const date = new Date(createdAt);
+//   const now = new Date();
+//   if (date.toDateString() === now.toDateString()) {
+//     return date.toLocaleTimeString("ru-RU", {
+//       hour: "2-digit",
+//       minute: "2-digit",
+//     });
+//   }
+//   return date.toLocaleDateString("ru-RU", {
+//     day: "numeric",
+//     month: "long",
+//     year: "numeric",
+//   });
+// };
 
 export default function ForumTopicPage() {
   const { id } = useParams<{ id: string }>();
@@ -10,7 +78,7 @@ export default function ForumTopicPage() {
   const [topic, setTopic] = useState<any | null>(null);
   const [replies, setReplies] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [replyText, setReplyText] = useState('');
+  const [replyText, setReplyText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -21,7 +89,7 @@ export default function ForumTopicPage() {
         setTopic(topicData);
         if (topicData.replies) setReplies(topicData.replies);
       } catch (err) {
-        console.error('[v0] Failed to fetch forum topic:', err);
+        console.error("Failed to fetch forum topic:", err);
       } finally {
         setLoading(false);
       }
@@ -35,13 +103,19 @@ export default function ForumTopicPage() {
 
     setIsSubmitting(true);
     try {
-      const newReply = await api.addForumReply(id, {
-        content: replyText.trim(),
-      }, token);
+      const newReply = await api.addForumReply(
+        id,
+        {
+          content: replyText.trim(),
+          author: user.name,
+          author_avatar: `https://ui-avatars.com/api/?name=${user.name}`,
+        },
+        token,
+      );
 
       if (newReply) {
         setReplies((prev) => [...prev, newReply]);
-        setReplyText('');
+        setReplyText("");
       }
     } catch {
       // handle error
@@ -52,12 +126,18 @@ export default function ForumTopicPage() {
 
   if (loading) {
     return (
-      <div className="pt-20 min-h-screen">
-        <div className="container mx-auto px-4 lg:px-8 py-8">
-          <div className="max-w-3xl mx-auto">
-            <div className="h-8 w-2/3 bg-card rounded animate-pulse mb-4" />
-            <div className="h-32 bg-card rounded-xl animate-pulse mb-6" />
-            <div className="h-20 bg-card rounded-xl animate-pulse" />
+      <div className="forum-page">
+        <div className="container py-5">
+          <div className="forum-container">
+            <div
+              className="skeleton-forum-line mb-3"
+              style={{ height: "30px", width: "60%" }}
+            />
+            <div
+              className="skeleton-forum-line mb-4"
+              style={{ height: "120px" }}
+            />
+            <div className="skeleton-forum-line" style={{ height: "80px" }} />
           </div>
         </div>
       </div>
@@ -66,10 +146,14 @@ export default function ForumTopicPage() {
 
   if (!topic) {
     return (
-      <div className="pt-20 min-h-screen flex items-center justify-center">
+      <div className="forum-page d-flex align-items-center justify-content-center">
         <div className="text-center">
-          <h2 className="text-xl font-bold mb-2">Тема не найдена</h2>
-          <Link to="/blog?tab=forum" className="text-emerald-400 hover:text-emerald-300">
+          <h2 className="fw-bold mb-3">Тема не найдена</h2>
+          <Link
+            to="/blog?tab=forum"
+            className="text-primary text-decoration-none"
+            style={{ color: "hsl(var(--primary))" }}
+          >
             Вернуться к обсуждениям
           </Link>
         </div>
@@ -77,101 +161,136 @@ export default function ForumTopicPage() {
     );
   }
 
+  const formatForumDate = (createdAt: string) => {
+    const date = new Date(createdAt);
+    const now = new Date();
+
+    const isToday = date.toDateString() === now.toDateString();
+
+    if (isToday) {
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } else {
+      return date.toLocaleDateString("ru-RU", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+    }
+  };
+
   return (
-    <div className="pt-20 min-h-screen">
-      <div className="container mx-auto px-4 lg:px-8 py-8">
-        <div className="max-w-3xl mx-auto">
+    <div className="forum-page">
+      <div className="container py-4">
+        <div className="forum-container">
+          {/* Back link */}
           <Link
             to="/blog?tab=forum"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-emerald-400 transition-colors mb-6"
+            className="d-inline-flex align-items-center gap-2 small text-muted text-decoration-none mb-4 hover-primary"
+            style={{ transition: "color 0.2s" }}
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft size={16} />
             Назад к обсуждениям
           </Link>
 
-          {/* Topic */}
-          <div className="p-6 rounded-xl bg-card border border-border mb-6">
-            <div className="flex items-center gap-3 mb-4">
-              <img
-                src={topic.authorAvatar || ''}
-                alt={topic.author}
-                className="w-10 h-10 rounded-full"
-              />
-              <div>
-                <div className="font-medium">{topic.author}</div>
-                <div className="text-xs text-muted-foreground">{topic.date}</div>
+          {/* Main Topic Header */}
+          <div className="forum-card">
+            <div className="d-flex align-items-center gap-3 mb-3">
+              <UserAvatar name={topic.author} size="md" />
+              <div style={{ minWidth: 0 }}>
+                <div className="fw-bold">
+                  {" "}
+                  {typeof topic.author === "object"
+                    ? topic.author.name
+                    : topic.author}
+                </div>
+                <div
+                  className="x-small text-muted"
+                  style={{ fontSize: "0.75rem" }}
+                >
+                  {formatForumDate(topic.created_at)}
+                </div>
               </div>
             </div>
-            <h1 className="text-xl lg:text-2xl font-bold mb-3">{topic.title}</h1>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span className="px-2 py-0.5 bg-muted rounded-full text-xs">{topic.category}</span>
-              <div className="flex items-center gap-1">
-                <MessageSquare className="w-4 h-4" />
-                {topic.replies} ответов
+            <h1 className="h3 fw-bold mb-3">{topic.title}</h1>
+            <div className="forum-meta">
+              <span className="forum-category-tag">{topic.category}</span>
+              <div className="d-flex align-items-center gap-1">
+                <MessageSquare size={16} />
+                <span>{replies.length} ответов</span>
               </div>
-              <span>{topic.views} просмотров</span>
             </div>
           </div>
 
-          {/* Replies */}
-          <div className="space-y-4 mb-8">
+          {/* Replies List */}
+          <div className="mb-5">
             {replies.map((reply) => (
-              <div key={reply.id} className="p-5 rounded-xl bg-card border border-border">
-                <div className="flex items-center gap-3 mb-3">
-                  <img
-                    src={reply.authorAvatar || ''}
-                    alt={reply.author}
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <div>
-                    <div className="text-sm font-medium">{reply.author}</div>
-                    <div className="text-xs text-muted-foreground">{reply.date}</div>
+              <div key={reply.id} className="reply-item">
+                <div className="d-flex align-items-center gap-3 mb-3">
+                  <UserAvatar name={reply.author} size="sm" />
+                  <div style={{ minWidth: 0 }}>
+                    <div className="small fw-bold text-truncate">
+                      {typeof reply.author === "object"
+                        ? reply.author.name
+                        : reply.author}
+                    </div>
+                    <div
+                      className="x-small text-muted"
+                      style={{ fontSize: "0.7rem" }}
+                    >
+                      {formatForumDate(reply.created_at)}
+                    </div>
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">{reply.content}</p>
-                <div className="flex items-center gap-1 mt-3 text-xs text-muted-foreground">
-                  <ThumbsUp className="w-3 h-3" />
-                  {reply.likes}
-                </div>
+                <p
+                  className="small text-muted mb-3"
+                  style={{ lineHeight: "1.6" }}
+                >
+                  {reply.content}
+                </p>
               </div>
             ))}
           </div>
 
-          {/* Reply Form */}
-          {user ? (
-            <form onSubmit={handleSubmitReply} className="p-5 rounded-xl bg-card border border-border">
-              <h3 className="font-medium mb-4">Ответить</h3>
-              <textarea
-                value={replyText}
-                onChange={(e) => setReplyText(e.target.value)}
-                placeholder="Напишите ваш ответ..."
-                rows={4}
-                required
-                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-sm outline-none resize-none mb-4"
-              />
-              <button
-                type="submit"
-                disabled={isSubmitting || !replyText.trim()}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-medium transition-colors text-sm"
-              >
-                <Send className="w-4 h-4" />
-                {isSubmitting ? 'Отправка...' : 'Отправить'}
-              </button>
-            </form>
-          ) : (
-            <div className="p-5 rounded-xl bg-card border border-border text-center">
-              <User className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
-              <p className="text-sm text-muted-foreground mb-3">
-                Войдите, чтобы оставить ответ
-              </p>
-              <Link
-                to="/auth"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors"
-              >
-                Войти
-              </Link>
-            </div>
-          )}
+          {/* Reply Form Section */}
+          <div className="reply-form-container">
+            {user ? (
+              <form onSubmit={handleSubmitReply} className="forum-card">
+                <h3 className="h6 fw-bold mb-4">Ответить</h3>
+                <textarea
+                  value={replyText}
+                  onChange={(e) => setReplyText(e.target.value)}
+                  placeholder="Напишите ваш ответ..."
+                  rows={4}
+                  required
+                  className="reply-textarea mb-4"
+                />
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !replyText.trim()}
+                  className="btn-forum-send"
+                >
+                  <Send size={16} />
+                  <span>{isSubmitting ? "Отправка..." : "Отправить"}</span>
+                </button>
+              </form>
+            ) : (
+              <div className="forum-card text-center">
+                <User size={32} className="text-muted mb-3 mx-auto" />
+                <p className="small text-muted mb-3">
+                  Войдите, чтобы оставить ответ
+                </p>
+                <Link
+                  to="/auth"
+                  className="btn-forum-send text-decoration-none"
+                >
+                  Войти
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
