@@ -183,7 +183,7 @@ export default function Cart() {
                           className="cart-item-img"
                         />
                         <div className="flex-grow-1 min-w-0">
-                          <h3 className="h6 fw-bold mb-1 text-truncate">
+                          <h3 className="h6 fw-bold mb-1">
                             {item.title || tour?.title || "Тур"}
                           </h3>
 
